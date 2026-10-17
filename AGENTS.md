@@ -15,3 +15,11 @@
 - Run: `npm install && ionic serve`
 - Tests: udagram_tests/, e2e/ (unknown status).
 - **Dormant: no commits since 2020-07-15. No active work planned; treat as archived unless Anil revives it.**
+
+## Cursor Cloud specific instructions
+
+- Angular CLI 8 and webpack 4 need Node.js 12.22.12. The image Node 22 fails this toolchain. Install puts Node at `/opt/node-v12.22.12`. Prefix PATH before `npm` or `ng`: `export PATH="/opt/node-v12.22.12/bin:$PATH"`.
+- The boot `start` script serves the app at `http://127.0.0.1:4200` with `npx ng serve --host 0.0.0.0 --port 4200 --disable-host-check`. `@ionic/cli` is not a project dependency; use `ng`, not `ionic serve`.
+- Unit tests need the sandbox-free Chrome wrapper from install: `CHROME_BIN=/opt/chrome-nosandbox/google-chrome npx ng test --watch=false --browsers=ChromeHeadless`.
+- `npx ng build` succeeds. `npx ng lint` fails on a missing newline at the end of `src/app/feed/services/feed.provider.service.ts`. Several Karma specs fail because they omit `HttpClient` or `ReactiveFormsModule`.
+- `src/environments/environment.ts` sets `apiHost` to an AWS ELB hostname that does not resolve. The shell still loads. Feed, login, and register requests show `Http failure response ... 0 Unknown Error`.
